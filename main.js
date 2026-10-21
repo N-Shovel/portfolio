@@ -70,10 +70,27 @@ const chatSuggest = document.getElementById('chatSuggest');
 const sendBtn = chatForm.querySelector('button');
 const history = [];
 
+// Turn [label](url) and bare URLs into links, building DOM nodes so no HTML is injected.
+function renderWithLinks(el, text) {
+  const pattern = /\[([^\]]+)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|((?:https?:\/\/|mailto:)[^\s)]+)/g;
+  let last = 0;
+  for (const m of text.matchAll(pattern)) {
+    el.append(text.slice(last, m.index));
+    const url = m[2] || m[3];
+    const a = document.createElement('a');
+    a.href = url;
+    a.textContent = m[1] || url.replace(/^(https?:\/\/|mailto:)/, '').replace(/\/$/, '');
+    if (!url.startsWith('mailto:')) { a.target = '_blank'; a.rel = 'noopener'; }
+    el.append(a);
+    last = m.index + m[0].length;
+  }
+  el.append(text.slice(last));
+}
+
 function addMessage(role, text) {
   const div = document.createElement('div');
   div.className = `msg ${role}`;
-  div.textContent = text;
+  if (role === 'bot') renderWithLinks(div, text); else div.textContent = text;
   chatLog.appendChild(div);
   chatLog.scrollTop = chatLog.scrollHeight;
   return div;
