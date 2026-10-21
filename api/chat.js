@@ -1,7 +1,7 @@
 import { SYSTEM_PROMPT } from './_knowledge.js';
 
 // Models to try in order; the first that works is used.
-const MODELS = (process.env.GEMINI_MODEL || 'gemini-flash-latest,gemini-2.5-flash,gemini-2.0-flash').split(',');
+const MODELS = (process.env.GEMINI_MODEL || 'gemini-flash-latest,gemini-2.5-flash,gemini-flash-lite-latest,gemini-2.5-flash-lite,gemini-flash-latest').split(',');
 const MAX_MESSAGES = 12;
 const MAX_CHARS = 500;
 const FALLBACK = 'Sorry, I can\'t answer right now. You can email Rody at nimrodpala01@gmail.com.';
@@ -49,10 +49,11 @@ export default async function handler(req, res) {
         headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
         body,
       });
-      if (r.status === 404) continue; // model retired or unavailable, try the next one
       const data = await r.json();
       if (!r.ok) {
-        console.error('Gemini error', model, r.status, JSON.stringify(data).slice(0, 500));
+        // 404 = model retired, 429/5xx = overloaded or quota hit: fall through to the next model.
+        console.error('Gemini error', model, r.status, JSON.stringify(data).slice(0, 300));
+        if (r.status === 404 || r.status === 429 || r.status >= 500) continue;
         return res.status(502).json({ error: FALLBACK });
       }
       const reply = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('').trim();
