@@ -39,7 +39,7 @@ export default async function handler(req, res) {
   const body = JSON.stringify({
     systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
     contents,
-    generationConfig: { temperature: 0.4, maxOutputTokens: 600 },
+    generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }, // thinking models spend part of this before replying
   });
 
   for (const model of MODELS) {
