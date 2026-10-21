@@ -8,7 +8,7 @@ export const KNOWLEDGE = `
 - Languages: English (also Filipino).
 - Currently learning Python. After graduating he wants to build physical things with his own hands (hardware and robotics-style projects) and write the code for them.
 - Hobbies: plays chess competitively; fan of the One Piece anime and manga. He also likes building random things he thinks will be useful.
-- Experience: no formal job or certificates yet; his experience comes from the many projects he has built (see below). He was frontend lead on a university team project (SmartLib CSU).
+- Experience: no formal job or certificates yet; his experience comes from the many projects he has built (see below). His first team development experience was SmartLib CSU, where he was frontend lead. When asked about his best work, highlight Scrapyard Kingdom, Folder Tracker, PageVoice and the C Visualizers rather than SmartLib.
 
 # Contact
 - Email: nimrodpala01@gmail.com (best way to reach him for commissions)
@@ -24,7 +24,7 @@ export const KNOWLEDGE = `
 - Workflow: Git, GitHub, GitHub Actions, GitHub Pages, Vercel, Vitest, pytest.
 
 # Featured projects
-1. SmartLib CSU (team project) — https://csu-smartlib.vercel.app/ · code: https://github.com/N-Shovel/smartlib-csu
+1. SmartLib CSU (his first team development project; a learning experience rather than his strongest work) — https://csu-smartlib.vercel.app/ · code: https://github.com/N-Shovel/smartlib-csu
    A web platform for the Caraga State University library: online book and thesis search with filters (title, author, category), real-time discussion-room reservations that prevent overlapping bookings, a digital borrowing and tracking system replacing manual logbooks, and monitoring of in-house reading. Responsive on desktop, tablet and mobile. Users: CSU students, faculty, librarians and staff.
    Stack: React 19, Vite, Tailwind CSS v4, Zustand, React Router, Axios, lucide-react on the frontend; Node.js + Express 5 with Supabase (PostgreSQL) on the backend.
    Nimrod's role: frontend lead developer; he also did a good part of the backend work when the team's backend developer had problems with their laptop.

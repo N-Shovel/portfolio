@@ -4,24 +4,6 @@ export const GITHUB = 'https://github.com/N-Shovel';
 
 export const projects = [
   {
-    name: 'SmartLib CSU',
-    meta: 'Frontend lead · team',
-    image: 'smartlib.jpg',
-    alt: 'SmartLib CSU sign-in page',
-    description: 'Library platform for Caraga State University: book and thesis search, room reservations, and digital borrowing tracking. I led the front end and also handled backend work.',
-    stack: ['React', 'Tailwind', 'Zustand', 'Express', 'Supabase'],
-    links: [['Live', 'https://csu-smartlib.vercel.app/'], ['Code', 'https://github.com/N-Shovel/smartlib-csu']],
-  },
-  {
-    name: 'PageVoice',
-    meta: 'In development',
-    image: 'pagevoice.svg',
-    alt: 'PageVoice: books turned into audio',
-    description: 'Offline desktop app that turns EPUB, PDF and TXT books into audiobooks. It cleans up the text, reads it with a neural voice on your CPU, and exports M4B or MP3.',
-    stack: ['Python', 'Kokoro TTS', 'ffmpeg'],
-    links: [['Code', 'https://github.com/N-Shovel/pagevoice']],
-  },
-  {
     name: 'Scrapyard Kingdom',
     meta: 'Game',
     image: 'scrapyard.jpg',
@@ -41,6 +23,15 @@ export const projects = [
     links: [['Download', 'https://github.com/N-Shovel/folder-tracker/releases/latest'], ['Code', 'https://github.com/N-Shovel/folder-tracker']],
   },
   {
+    name: 'PageVoice',
+    meta: 'In development',
+    image: 'pagevoice.svg',
+    alt: 'PageVoice: books turned into audio',
+    description: 'Offline desktop app that turns EPUB, PDF and TXT books into audiobooks. It cleans up the text, reads it with a neural voice on your CPU, and exports M4B or MP3.',
+    stack: ['Python', 'Kokoro TTS', 'ffmpeg'],
+    links: [['Code', 'https://github.com/N-Shovel/pagevoice']],
+  },
+  {
     name: 'C Visualizers',
     meta: 'Education · 3 apps',
     image: 'c-ds.jpg',
@@ -52,6 +43,15 @@ export const projects = [
       ['Data structures', 'https://n-shovel.github.io/c-data-structures-visualizer/'],
       ['Recursion', 'https://n-shovel.github.io/c-recursion-visualizer/'],
     ],
+  },
+  {
+    name: 'SmartLib CSU',
+    meta: 'First team project',
+    image: 'smartlib.jpg',
+    alt: 'SmartLib CSU sign-in page',
+    description: 'My first team project: a library platform for Caraga State University with book search, room reservations and borrowing tracking. I led the front end and learned how to ship as a team, picking up backend work when needed.',
+    stack: ['React', 'Tailwind', 'Zustand', 'Express', 'Supabase'],
+    links: [['Live', 'https://csu-smartlib.vercel.app/'], ['Code', 'https://github.com/N-Shovel/smartlib-csu']],
   },
   {
     name: 'ITE Math Lab',
