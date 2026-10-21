@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { startAmbient, stopAmbient } from '../ambient.js';
+import Blossom from './Blossom.jsx';
 
 function toggleTheme() {
   const dark = document.documentElement.classList.toggle('dark');
@@ -25,10 +26,10 @@ export default function Nav() {
   return (
     <header className="sticky top-0 z-20 border-b border-line/60 bg-bg/60 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-[18px] sm:px-8">
-      <a href="#top" className="font-semibold">Nimrod Pala</a>
-      <nav aria-label="Main" className="flex items-center gap-4 text-[0.92rem] sm:gap-[22px]">
+      <a href="#top" className="flex items-center gap-2 font-semibold whitespace-nowrap"><Blossom className="size-4 text-accent" />Nimrod Pala</a>
+      <nav aria-label="Main" className="flex items-center gap-3 text-[0.92rem] sm:gap-[22px]">
         <a href="#work" className="text-muted hover:text-fg">Work</a>
-        <a href="#about" className="text-muted hover:text-fg max-[380px]:hidden">About</a>
+        <a href="#about" className="text-muted hover:text-fg max-[480px]:hidden">About</a>
         <a href="#contact" className="text-muted hover:text-fg">Contact</a>
         <button onClick={toggleSound} aria-label={sound ? 'Turn music off' : 'Turn on ambient music'} aria-pressed={sound} title={sound ? 'Music on' : 'Play ambient music'} className={`grid cursor-pointer place-items-center p-1 hover:text-fg ${sound ? 'text-accent' : 'text-muted'}`}>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

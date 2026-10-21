@@ -2,23 +2,28 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Theme colors as CSS variables, so utilities like bg-bg or text-muted switch with the theme. */
+/* Theme colors as CSS variables, so utilities like bg-bg or text-muted switch with the theme.
+   Sakura pinks by day and night blues after dark, matching the scene in scene/sakura.js. */
 :root {
-  --bg: #ffffff;
-  --surface: #f5f5f5;
-  --line: #e5e5e5;
-  --fg: #171717;
-  --muted: #6b6b6b;
-  --accent: #059669;
+  --bg: #fbf7fa;
+  --surface: #f4ecf2;
+  --line: #ecdde7;
+  --fg: #241b2b;
+  --muted: #6e6077;
+  --accent: #c03a6b;
+  --panel: rgba(255, 250, 253, 0.7);
+  --halo: rgba(253, 246, 250, 0.95);
   color-scheme: light;
 }
 .dark {
-  --bg: #0c0c0c;
-  --surface: #161616;
-  --line: #262626;
-  --fg: #ededed;
-  --muted: #8f8f8f;
-  --accent: #34d399;
+  --bg: #0a0d20;
+  --surface: #151935;
+  --line: #262a4d;
+  --fg: #eee9f4;
+  --muted: #a99fb8;
+  --accent: #f2a7c3;
+  --panel: rgba(11, 14, 34, 0.64);
+  --halo: rgba(5, 8, 26, 0.9);
   color-scheme: dark;
 }
 
@@ -29,45 +34,36 @@
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-panel: var(--panel);
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Shippori Mincho", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+
+@theme {
+  --animate-drift: drift 2.8s ease-in-out infinite;
+  @keyframes drift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
 }
 
 @layer base {
   html { scroll-behavior: smooth; scroll-padding-top: 72px; }
   body { @apply bg-bg text-fg font-sans antialiased leading-relaxed; }
-}
-
-/* Background texture (see Background.jsx). Strength is tuned per theme. */
-:root { --blob-opacity: 0.16; --dot: rgb(0 0 0 / 0.09); --spot: rgb(5 150 105 / 0.07); --grain-opacity: 0.05; }
-.dark { --blob-opacity: 0.13; --dot: rgb(255 255 255 / 0.07); --spot: rgb(52 211 153 / 0.08); --grain-opacity: 0.07; }
-
-.blob {
-  position: absolute; border-radius: 9999px; filter: blur(90px);
-  opacity: var(--blob-opacity); animation: drift 30s ease-in-out infinite alternate;
-}
-@keyframes drift {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(6vw, 4vh) scale(1.12); }
-  100% { transform: translate(-4vw, 8vh) scale(0.94); }
-}
-.dots {
-  background-image: radial-gradient(var(--dot) 1px, transparent 1.4px);
-  background-size: 22px 22px;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 40%, transparent 100%);
-}
-.spotlight {
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, -500px), var(--spot), transparent 70%);
-}
-.grain {
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-@media (prefers-reduced-motion: reduce) {
-  .blob { animation: none; }
+  ::selection { background: var(--accent); color: var(--bg); }
 }
 
 /* Underlined text links that darken on hover. */
 @utility link {
   @apply underline decoration-line underline-offset-[3px] transition-colors hover:decoration-current;
+}
+
+/* Soft glow behind text that sits directly on the scene. */
+@utility legible {
+  text-shadow: 0 0 18px var(--halo), 0 0 5px var(--halo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }

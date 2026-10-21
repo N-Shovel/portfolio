@@ -1,13 +1,13 @@
 // Calm generative ambient music, synthesized with the Web Audio API (no audio files):
-// soft water/wind noise, slow pad chords and occasional chimes through an echo.
+// sea-like noise, slow open chords, and koto-like plucks in the Japanese "in" scale, through an echo.
 
 const CHORDS = [
-  [130.81, 196.0, 246.94, 329.63], // Cmaj7
-  [110.0, 164.81, 196.0, 261.63],  // Am7
-  [87.31, 130.81, 164.81, 220.0],  // Fmaj7
-  [98.0, 146.83, 196.0, 246.94],   // G
+  [146.83, 220.0, 293.66, 392.0],  // D  A  D  G
+  [116.54, 146.83, 220.0, 293.66], // Bb D  A  D
+  [98.0, 146.83, 196.0, 233.08],   // G  D  G  Bb
+  [155.56, 233.08, 293.66, 392.0], // Eb Bb D  G
 ];
-const CHIMES = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5]; // C major pentatonic
+const SCALE = [440.0, 587.33, 622.25, 783.99, 880.0, 932.33, 1174.66]; // A, then D Eb G A Bb D
 const CHORD_SECONDS = 9;
 
 let ctx = null;
@@ -62,20 +62,34 @@ function playChord(chord, at, out) {
   }
 }
 
-function playChime(out, echo) {
-  const at = ctx.currentTime + 0.05;
-  const osc = ctx.createOscillator();
-  osc.type = 'sine';
-  osc.frequency.value = CHIMES[Math.floor(Math.random() * CHIMES.length)];
-  const g = ctx.createGain();
-  g.gain.setValueAtTime(0, at);
-  g.gain.linearRampToValueAtTime(0.05, at + 0.02);
-  g.gain.exponentialRampToValueAtTime(0.0001, at + 2.5);
-  osc.connect(g);
-  g.connect(out);
-  g.connect(echo);
-  osc.start(at);
-  osc.stop(at + 2.6);
+// A plucked-string note: starts slightly sharp and bright, then settles and darkens as it decays.
+function playPluck(out, echo, freq, at) {
+  const body = ctx.createOscillator();
+  body.type = 'triangle';
+  body.frequency.setValueAtTime(freq * 1.01, at);
+  body.frequency.exponentialRampToValueAtTime(freq, at + 0.08);
+  const overtone = ctx.createOscillator();
+  overtone.type = 'sine';
+  overtone.frequency.value = freq * 2;
+  const overtoneGain = ctx.createGain();
+  overtoneGain.gain.value = 0.25;
+  const tone = ctx.createBiquadFilter();
+  tone.type = 'lowpass';
+  tone.frequency.setValueAtTime(3500, at);
+  tone.frequency.exponentialRampToValueAtTime(700, at + 1.5);
+  const env = ctx.createGain();
+  env.gain.setValueAtTime(0, at);
+  env.gain.linearRampToValueAtTime(0.07, at + 0.006);
+  env.gain.exponentialRampToValueAtTime(0.0001, at + 2.4);
+  body.connect(tone);
+  overtone.connect(overtoneGain).connect(tone);
+  tone.connect(env);
+  env.connect(out);
+  env.connect(echo);
+  body.start(at);
+  overtone.start(at);
+  body.stop(at + 2.5);
+  overtone.stop(at + 2.5);
 }
 
 export function startAmbient() {
@@ -86,7 +100,7 @@ export function startAmbient() {
   master.gain.linearRampToValueAtTime(0.6, ctx.currentTime + 3);
   master.connect(ctx.destination);
 
-  // Echo for the chimes and a little of the pad.
+  // Echo for the plucks and a little of the pad.
   const echo = ctx.createDelay(2);
   echo.delayTime.value = 0.42;
   const feedback = ctx.createGain();
@@ -111,11 +125,16 @@ export function startAmbient() {
   nextChord();
   timers.push(setInterval(nextChord, CHORD_SECONDS * 1000));
 
-  const nextChime = () => {
-    playChime(master, echo);
-    timers.push(setTimeout(nextChime, 2500 + Math.random() * 4500));
+  // wander through the scale in small steps, sometimes answering with the note below
+  let note = 3;
+  const nextPluck = () => {
+    note = Math.max(0, Math.min(SCALE.length - 1, note + Math.round((Math.random() - 0.5) * 4)));
+    const at = ctx.currentTime + 0.05;
+    playPluck(master, echo, SCALE[note], at);
+    if (note > 0 && Math.random() < 0.35) playPluck(master, echo, SCALE[note - 1], at + 0.4);
+    timers.push(setTimeout(nextPluck, 2200 + Math.random() * 4000));
   };
-  timers.push(setTimeout(nextChime, 3000));
+  timers.push(setTimeout(nextPluck, 3000));
 }
 
 export function stopAmbient() {

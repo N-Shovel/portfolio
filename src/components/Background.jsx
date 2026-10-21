@@ -1,34 +1,20 @@
 import { useEffect, useRef } from 'react';
+import { createSakuraScene } from '../scene/sakura.js';
 
-// Decorative layer behind the page: dot grid, drifting color blobs, film grain and a cursor spotlight.
+// Fixed backdrop: a sakura tree beside the sea with falling petals (drawn in scene/sakura.js).
 export default function Background() {
-  const ref = useRef(null);
+  const baseRef = useRef(null);
+  const fxRef = useRef(null);
 
   useEffect(() => {
-    const el = ref.current;
-    let frame = 0;
-    const onMove = (e) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        el.style.setProperty('--mx', `${e.clientX}px`);
-        el.style.setProperty('--my', `${e.clientY}px`);
-      });
-    };
-    window.addEventListener('pointermove', onMove);
-    return () => {
-      window.removeEventListener('pointermove', onMove);
-      cancelAnimationFrame(frame);
-    };
+    const scene = createSakuraScene(baseRef.current, fxRef.current);
+    return () => scene.destroy();
   }, []);
 
   return (
-    <div ref={ref} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="blob left-[-10%] top-[-15%] size-[45vw] bg-emerald-400 [animation-duration:26s]" />
-      <div className="blob right-[-12%] top-[20%] size-[40vw] bg-sky-400 [animation-delay:-8s] [animation-duration:32s]" />
-      <div className="blob bottom-[-20%] left-[25%] size-[42vw] bg-violet-500 [animation-delay:-16s] [animation-duration:38s]" />
-      <div className="dots absolute inset-0" />
-      <div className="spotlight absolute inset-0" />
-      <div className="grain absolute inset-0" />
+    <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 -z-10 h-lvh">
+      <canvas ref={baseRef} className="absolute inset-0 size-full" />
+      <canvas ref={fxRef} className="absolute inset-0 size-full" />
     </div>
   );
 }

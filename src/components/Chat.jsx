@@ -69,7 +69,7 @@ export default function Chat({ open, setOpen }) {
       <button
         onClick={() => setOpen(!open)}
         aria-label={open ? 'Close chat assistant' : 'Open chat assistant'}
-        className="fixed right-5 bottom-5 z-40 grid size-12 cursor-pointer place-items-center rounded-full bg-fg text-bg shadow-lg transition-transform hover:scale-105"
+        className="fixed right-5 bottom-5 z-40 grid size-12 cursor-pointer place-items-center rounded-full bg-accent text-bg shadow-lg transition-transform hover:scale-105"
       >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
       </button>
@@ -86,7 +86,7 @@ export default function Chat({ open, setOpen }) {
 
           <div ref={logRef} aria-live="polite" className="flex flex-1 flex-col gap-2.5 overflow-y-auto p-4">
             {messages.map((m, i) => (
-              <div key={i} className={`max-w-[85%] rounded-xl px-3 py-2 text-[0.9rem] whitespace-pre-wrap break-words ${m.role === 'user' ? 'self-end bg-fg text-bg' : 'self-start bg-surface'}`}>
+              <div key={i} className={`max-w-[85%] rounded-xl px-3 py-2 text-[0.9rem] whitespace-pre-wrap break-words ${m.role === 'user' ? 'self-end bg-accent text-bg' : 'self-start bg-surface'}`}>
                 {m.role === 'user' ? m.text : withLinks(m.text)}
               </div>
             ))}
@@ -111,7 +111,7 @@ export default function Chat({ open, setOpen }) {
               autoComplete="off"
               className="min-w-0 flex-1 rounded-[10px] border border-line bg-bg px-3 py-2 text-[0.92rem] outline-none focus:border-muted"
             />
-            <button type="submit" disabled={busy} aria-label="Send" className="w-[38px] cursor-pointer rounded-[10px] bg-fg text-bg disabled:cursor-default disabled:opacity-40">↑</button>
+            <button type="submit" disabled={busy} aria-label="Send" className="w-[38px] cursor-pointer rounded-[10px] bg-accent text-bg disabled:cursor-default disabled:opacity-40">↑</button>
           </form>
         </section>
       )}

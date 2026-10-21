@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#0b0f14"/><text x="32" y="42" text-anchor="middle" font-family="Consolas, monospace" font-size="26" font-weight="700" fill="#2ee6a6">R_</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#0a0d20"/>
+  <g fill="#f2a7c3">
+    <ellipse cx="32" cy="19" rx="8" ry="11"/>
+    <ellipse cx="32" cy="19" rx="8" ry="11" transform="rotate(72 32 32)"/>
+    <ellipse cx="32" cy="19" rx="8" ry="11" transform="rotate(144 32 32)"/>
+    <ellipse cx="32" cy="19" rx="8" ry="11" transform="rotate(216 32 32)"/>
+    <ellipse cx="32" cy="19" rx="8" ry="11" transform="rotate(288 32 32)"/>
+  </g>
+  <circle cx="32" cy="32" r="4.5" fill="#c03a6b"/>
+</svg>
