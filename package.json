@@ -1,0 +1,7 @@
+{
+  "name": "nimrod-pala-portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Portfolio website of Nimrod 'Rody' Pala with an AI chat assistant",
+  "engines": { "node": ">=20" }
+}
