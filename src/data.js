@@ -1,6 +1,7 @@
 export const EMAIL = 'nimrodpala01@gmail.com';
 export const LINKEDIN = 'https://www.linkedin.com/in/nimrod-pala-273a78342/';
 export const GITHUB = 'https://github.com/N-Shovel';
+export const RESUME = '/Pala_Nimrod_Resume.pdf';
 
 export const projects = [
   {
@@ -66,7 +67,10 @@ export const projects = [
 
 // [name, description, optional link]
 export const moreProjects = [
+  ['LCO & Organization', 'Project leader: platform for CSU student orgs with an LCO fee-status check · Next.js, Supabase'],
   ['SmartLib CSU', 'My first team project: CSU library platform, frontend lead · React, Express, Supabase', 'https://csu-smartlib.vercel.app/'],
+  ['ITE 18 Learning Journey', '27 course activities, built and deployed by CI · Three.js, Vite, GitHub Actions', 'https://n-shovel.github.io/ite18-learning-journey/'],
+  ['Orbit Synth', 'Generative music toy: planets on orbit rings play notes · Tone.js', 'https://github.com/N-Shovel/orbit-synth'],
   ['My Own News Feed', 'Customizable world news feed · React, TypeScript'],
   ['Avatar Customizer', 'Minecraft skin editor with 3D preview · TypeScript, Three.js'],
   ['LUCID', 'First-person story game, final project for a major subject · Godot 4'],

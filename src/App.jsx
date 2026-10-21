@@ -3,7 +3,7 @@ import Nav from './components/Nav.jsx';
 import Chat from './components/Chat.jsx';
 import Background from './components/Background.jsx';
 import Blossom from './components/Blossom.jsx';
-import { projects, moreProjects, skills, EMAIL, LINKEDIN, GITHUB } from './data.js';
+import { projects, moreProjects, skills, EMAIL, LINKEDIN, GITHUB, RESUME } from './data.js';
 
 const ext = { target: '_blank', rel: 'noopener' };
 
@@ -73,6 +73,7 @@ export default function App() {
               <li><a href={`mailto:${EMAIL}`} className="link">Email</a></li>
               <li><a href={LINKEDIN} {...ext} className="link">LinkedIn</a></li>
               <li><a href={GITHUB} {...ext} className="link">GitHub</a></li>
+              <li><a href={RESUME} {...ext} className="link">Resume</a></li>
               <li><button onClick={() => setChatOpen(true)} className="cursor-pointer text-accent underline-offset-[3px] hover:underline">Ask my assistant</button></li>
             </ul>
           </div>
@@ -124,6 +125,7 @@ export default function App() {
           <ul className="flex gap-[22px] text-[0.95rem]">
             <li><a href={LINKEDIN} {...ext} className="link">LinkedIn</a></li>
             <li><a href={GITHUB} {...ext} className="link">GitHub</a></li>
+            <li><a href={RESUME} {...ext} className="link">Resume</a></li>
           </ul>
         </Section>
       </main>

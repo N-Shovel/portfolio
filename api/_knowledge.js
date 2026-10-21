@@ -8,13 +8,13 @@ export const KNOWLEDGE = `
 - Languages: English (also Filipino).
 - Currently learning Python. After graduating he wants to build physical things with his own hands (hardware and robotics-style projects) and write the code for them.
 - Hobbies: plays chess competitively; fan of the One Piece anime and manga. He also likes building random things he thinks will be useful.
-- Experience: no formal job or certificates yet; his experience comes from the many projects he has built (see below). His first team development experience was SmartLib CSU, where he was frontend lead. When asked about his best work, highlight Scrapyard Kingdom, Folder Tracker, PageVoice and the C Visualizers rather than SmartLib.
+- Experience: no formal job or certificates yet; his experience comes from the many projects he has built (see below). His first team development experience was SmartLib CSU, where he was frontend lead. He is now project leader of the LCO & Organization team project (see Team and leadership). When asked about his best work, highlight Scrapyard Kingdom, Folder Tracker, PageVoice and the C Visualizers rather than SmartLib.
 
 # Contact
 - Email: nimrodpala01@gmail.com (best way to reach him for commissions)
 - LinkedIn: https://www.linkedin.com/in/nimrod-pala-273a78342/
 - GitHub: https://github.com/N-Shovel
-- Resume: not published yet; ask him by email.
+- Resume (PDF): https://nimrodpala.vercel.app/Pala_Nimrod_Resume.pdf
 
 # Skills
 - Frontend: React (incl. React 19), JavaScript, TypeScript, Tailwind CSS (v4), HTML, CSS, Vite, Zustand, React Router.
@@ -49,6 +49,17 @@ export const KNOWLEDGE = `
 
 7. Stillness — https://stillness-sage.vercel.app · code: https://github.com/N-Shovel/stillness
    A calm animated mountain lake drawn on <canvas> that follows local time (dawn/day/dusk/night): birds, clouds, fireflies, stars. Ambient water and wind sound synthesized live with the Web Audio API (no audio files), a breathing guide, and a quiet auto-hiding interface.
+
+8. ITE 18 Learning Journey — https://n-shovel.github.io/ite18-learning-journey/ · code: https://github.com/N-Shovel/ite18-learning-journey
+   Showcase of all 27 activities from his ITE 18 course, from JavaScript basics to Three.js physics and imported models. A GitHub Actions pipeline builds every Vite demo and deploys it to GitHub Pages.
+
+9. Orbit Synth — code: https://github.com/N-Shovel/orbit-synth
+   A generative music toy for the browser: place planets on orbit rings and each plays a note when it crosses the top. Inner rings orbit faster and play higher notes, so patterns quickly become polyrhythms. Built with Tone.js.
+
+# Team and leadership
+- Project Leader, LCO & Organization (Software Engineering 2, team of 3, 2026 to present): a web platform for CSU student organizations with a fee-status check for the League of Campus Organizations (LCO). He interviewed LCO officers, wrote the SRS (software requirements specification), designed the ERD and built the Figma prototype. Stack: Next.js, Supabase. Still in progress; no public link yet.
+- Frontend Lead, SmartLib CSU (2026): see project 1.
+- Report Lead, Information Assurance and Security 1 (team of 2, 2026): writing the report and contingency plan for a Kali Linux penetration test of the LCO & Organization system.
 
 # Personal projects (private repos; no public links — say they are personal projects)
 - My Own News Feed: customizable desktop world news feed (React 19, TypeScript, Vite) pulling from The Guardian, New York Times, GNews and custom RSS/Atom feeds, with topic, region, source and keyword filters and saved preferences.
