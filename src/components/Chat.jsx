@@ -53,11 +53,15 @@ export default function Chat({ open, setOpen }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: history.filter((m) => !m.error).slice(-12) }),
+        signal: AbortSignal.timeout(25000),
       });
       const data = await res.json().catch(() => ({}));
       reply = data.reply ? { role: 'model', text: data.reply } : { role: 'model', text: data.error || `Sorry, something went wrong. You can email Rody at ${EMAIL}.`, error: true };
-    } catch {
-      reply = { role: 'model', text: `I couldn't connect just now. You can reach Rody directly at ${EMAIL}.`, error: true };
+    } catch (err) {
+      const text = err.name === 'TimeoutError'
+        ? `That's taking too long right now. You can email Rody directly at ${EMAIL}.`
+        : `I couldn't connect just now. You can reach Rody directly at ${EMAIL}.`;
+      reply = { role: 'model', text, error: true };
     }
     setMessages((m) => [...m, reply]);
     setBusy(false);

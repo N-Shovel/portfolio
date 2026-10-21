@@ -1,7 +1,10 @@
 import { SYSTEM_PROMPT } from './_knowledge.js';
 
-// Models to try in order; the first that works is used.
-const MODELS = (process.env.GEMINI_MODEL || 'gemini-flash-latest,gemini-2.5-flash,gemini-flash-lite-latest,gemini-2.5-flash-lite,gemini-flash-latest').split(',');
+// Models to try in order; the first that answers is used. Flash-Lite replies in about a second
+// without "thinking"; Flash is a slower fallback whose free quota runs out sooner.
+const MODELS = (process.env.GEMINI_MODEL || 'gemini-flash-lite-latest,gemini-flash-latest').split(',').map((m) => m.trim());
+// Give up on a model after this long and try the next, so an overloaded model can't hang the chat.
+const ATTEMPT_TIMEOUT_MS = 9000;
 const MAX_MESSAGES = 12;
 const MAX_CHARS = 500;
 const FALLBACK = 'Sorry, I can\'t answer right now. You can email Rody at nimrodpala01@gmail.com.';
@@ -39,26 +42,27 @@ export default async function handler(req, res) {
   const body = JSON.stringify({
     systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
     contents,
-    generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }, // thinking models spend part of this before replying
+    generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }, // room for the fallback model's thinking
   });
 
   const attempts = [];
   for (const model of MODELS) {
     const started = Date.now();
+    const timeout = new AbortController();
+    const timer = setTimeout(() => timeout.abort(), ATTEMPT_TIMEOUT_MS);
     try {
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model.trim()}:generateContent`, {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
         body,
+        signal: timeout.signal,
       });
       const data = await r.json();
       const took = Date.now() - started;
       if (!r.ok) {
-        // 404 = model retired, 429/5xx = overloaded or quota hit: fall through to the next model.
+        // e.g. 404 = model retired, 429 = quota used up, 503 = overloaded: try the next model.
         attempts.push(`${model}: ${r.status} in ${took}ms ${data.error?.message?.slice(0, 120) || ''}`);
-        if (r.status === 404 || r.status === 429 || r.status >= 500) continue;
-        console.error('Gemini failed:', attempts.join(' | '));
-        return res.status(502).json({ error: FALLBACK });
+        continue;
       }
       const reply = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('').trim();
       const usage = data.usageMetadata || {};
@@ -66,7 +70,10 @@ export default async function handler(req, res) {
       console.log('Gemini:', attempts.join(' | '));
       return res.status(200).json({ reply: reply || FALLBACK });
     } catch (err) {
-      attempts.push(`${model}: ${err.message} after ${Date.now() - started}ms`);
+      const reason = err.name === 'AbortError' ? 'timed out' : err.message;
+      attempts.push(`${model}: ${reason} after ${Date.now() - started}ms`);
+    } finally {
+      clearTimeout(timer);
     }
   }
   console.error('Gemini failed:', attempts.join(' | '));
