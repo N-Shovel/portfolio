@@ -42,8 +42,9 @@ export default async function handler(req, res) {
     generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }, // thinking models spend part of this before replying
   });
 
-  const failures = [];
+  const attempts = [];
   for (const model of MODELS) {
+    const started = Date.now();
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model.trim()}:generateContent`, {
         method: 'POST',
@@ -51,19 +52,23 @@ export default async function handler(req, res) {
         body,
       });
       const data = await r.json();
+      const took = Date.now() - started;
       if (!r.ok) {
         // 404 = model retired, 429/5xx = overloaded or quota hit: fall through to the next model.
-        failures.push(`${model}: ${r.status} ${data.error?.message?.slice(0, 120) || ''}`);
+        attempts.push(`${model}: ${r.status} in ${took}ms ${data.error?.message?.slice(0, 120) || ''}`);
         if (r.status === 404 || r.status === 429 || r.status >= 500) continue;
-        console.error('Gemini failed:', failures.join(' | '));
+        console.error('Gemini failed:', attempts.join(' | '));
         return res.status(502).json({ error: FALLBACK });
       }
       const reply = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('').trim();
+      const usage = data.usageMetadata || {};
+      attempts.push(`${model} (${data.modelVersion}) ok in ${took}ms, ${usage.thoughtsTokenCount || 0} thinking tokens`);
+      console.log('Gemini:', attempts.join(' | '));
       return res.status(200).json({ reply: reply || FALLBACK });
     } catch (err) {
-      failures.push(`${model}: ${err.message}`);
+      attempts.push(`${model}: ${err.message} after ${Date.now() - started}ms`);
     }
   }
-  console.error('Gemini failed:', failures.join(' | '));
+  console.error('Gemini failed:', attempts.join(' | '));
   return res.status(502).json({ error: FALLBACK });
 }
