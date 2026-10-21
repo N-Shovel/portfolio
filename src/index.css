@@ -38,6 +38,35 @@
   body { @apply bg-bg text-fg font-sans antialiased leading-relaxed; }
 }
 
+/* Background texture (see Background.jsx). Strength is tuned per theme. */
+:root { --blob-opacity: 0.16; --dot: rgb(0 0 0 / 0.09); --spot: rgb(5 150 105 / 0.07); --grain-opacity: 0.05; }
+.dark { --blob-opacity: 0.13; --dot: rgb(255 255 255 / 0.07); --spot: rgb(52 211 153 / 0.08); --grain-opacity: 0.07; }
+
+.blob {
+  position: absolute; border-radius: 9999px; filter: blur(90px);
+  opacity: var(--blob-opacity); animation: drift 30s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6vw, 4vh) scale(1.12); }
+  100% { transform: translate(-4vw, 8vh) scale(0.94); }
+}
+.dots {
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 40%, transparent 100%);
+}
+.spotlight {
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, -500px), var(--spot), transparent 70%);
+}
+.grain {
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-motion: reduce) {
+  .blob { animation: none; }
+}
+
 /* Underlined text links that darken on hover. */
 @utility link {
   @apply underline decoration-line underline-offset-[3px] transition-colors hover:decoration-current;

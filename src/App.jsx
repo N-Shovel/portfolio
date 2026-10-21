@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Nav from './components/Nav.jsx';
 import Chat from './components/Chat.jsx';
+import Background from './components/Background.jsx';
 import { projects, personalProjects, skills, EMAIL, LINKEDIN, GITHUB } from './data.js';
 
 const ext = { target: '_blank', rel: 'noopener' };
@@ -51,6 +52,7 @@ export default function App() {
 
   return (
     <>
+      <Background />
       <Nav />
       <main id="top" className="mx-auto max-w-6xl px-5 sm:px-8">
         <section className="flex flex-col-reverse gap-8 pt-10 pb-12 md:flex-row md:items-center md:justify-between md:gap-16 md:pt-24 md:pb-20">

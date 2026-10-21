@@ -16,7 +16,8 @@ export default function Nav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-20 mx-auto flex max-w-6xl sm:px-8 items-center justify-between bg-bg/85 px-5 py-[18px] backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-line/60 bg-bg/60 backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-[18px] sm:px-8">
       <a href="#top" className="font-semibold">Nimrod Pala</a>
       <nav aria-label="Main" className="flex items-center gap-4 text-[0.92rem] sm:gap-[22px]">
         <a href="#work" className="text-muted hover:text-fg">Work</a>
@@ -28,6 +29,7 @@ export default function Nav() {
           <svg className="hidden dark:block" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
         </button>
       </nav>
+      </div>
     </header>
   );
 }
