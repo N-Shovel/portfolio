@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Nav from './components/Nav.jsx';
 import Chat from './components/Chat.jsx';
 import Background from './components/Background.jsx';
-import { projects, personalProjects, skills, EMAIL, LINKEDIN, GITHUB } from './data.js';
+import { projects, moreProjects, skills, EMAIL, LINKEDIN, GITHUB } from './data.js';
 
 const ext = { target: '_blank', rel: 'noopener' };
 
@@ -15,16 +15,10 @@ function Section({ id, title, children }) {
   );
 }
 
-// Wide cards span two grid columns with the image beside the text.
-const WIDE = {
-  first: 'sm:col-span-2 sm:grid sm:grid-cols-2 sm:items-center sm:gap-7',
-  last: 'lg:col-span-2 lg:grid lg:grid-cols-2 lg:items-center lg:gap-7',
-};
-
-function Project({ p, wide }) {
+function Project({ p }) {
   return (
-    <article className={`group ${WIDE[wide] || ''}`}>
-      <a href={p.links[0][1]} {...ext} tabIndex={-1} className={`mb-3.5 block aspect-[16/10] overflow-hidden rounded-[10px] border border-line bg-surface ${wide === 'first' ? 'sm:mb-0' : wide === 'last' ? 'lg:mb-0' : ''}`}>
+    <article className="group flex flex-col">
+      <a href={p.links[0][1]} {...ext} tabIndex={-1} className="mb-3.5 block aspect-[16/10] overflow-hidden rounded-[10px] border border-line bg-surface">
         <img
           src={`/assets/projects/${p.image}`}
           alt={p.alt}
@@ -32,13 +26,14 @@ function Project({ p, wide }) {
           className={`h-full w-full object-top transition-transform duration-400 group-hover:scale-[1.03] ${p.contain ? 'object-contain py-2.5' : 'object-cover'}`}
         />
       </a>
-      <div>
-        <div className="mb-1.5 flex items-baseline justify-between gap-3">
-          <h3 className="font-semibold">{p.name}</h3>
-          <span className="whitespace-nowrap text-xs text-muted">{p.meta}</span>
-        </div>
-        <p className="text-[0.93rem] text-muted">{p.description}</p>
-        <p className="mt-2.5 font-mono text-xs text-muted opacity-85">{p.stack.join(' · ')}</p>
+      <div className="mb-1.5 flex items-baseline justify-between gap-3">
+        <h3 className="font-semibold">{p.name}</h3>
+        <span className="whitespace-nowrap text-xs text-muted">{p.meta}</span>
+      </div>
+      <p className="text-[0.93rem] text-muted">{p.description}</p>
+      {/* mt-auto keeps the stack and links aligned along the bottom of each row */}
+      <div className="mt-auto pt-2.5">
+        <p className="font-mono text-xs text-muted opacity-85">{p.stack.join(' · ')}</p>
         <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[0.9rem]">
           {p.links.map(([label, url]) => <a key={url} href={url} {...ext} className="link">{label}</a>)}
         </p>
@@ -75,16 +70,14 @@ export default function App() {
 
         <Section id="work" title="Selected work">
           <div className="grid gap-x-7 gap-y-11 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((p, i) => (
-              <Project key={p.name} p={p} wide={i === 0 ? 'first' : i === projects.length - 1 ? 'last' : undefined} />
-            ))}
+            {projects.map((p) => <Project key={p.name} p={p} />)}
           </div>
 
-          <h3 className="mt-13 mb-2 text-[0.95rem] font-semibold">Personal projects</h3>
+          <h3 className="mt-13 mb-2 text-[0.95rem] font-semibold">More projects</h3>
           <ul>
-            {personalProjects.map(([name, desc]) => (
+            {moreProjects.map(([name, desc, url]) => (
               <li key={name} className="flex flex-col gap-0.5 border-b border-line py-3 text-[0.93rem] sm:flex-row sm:justify-between sm:gap-4">
-                <span>{name}</span>
+                <span>{url ? <a href={url} {...ext} className="link">{name}</a> : name}</span>
                 <span className="text-muted sm:text-right">{desc}</span>
               </li>
             ))}

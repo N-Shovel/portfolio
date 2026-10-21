@@ -45,15 +45,6 @@ export const projects = [
     ],
   },
   {
-    name: 'SmartLib CSU',
-    meta: 'First team project',
-    image: 'smartlib.jpg',
-    alt: 'SmartLib CSU sign-in page',
-    description: 'My first team project: a library platform for Caraga State University with book search, room reservations and borrowing tracking. I led the front end and learned how to ship as a team, picking up backend work when needed.',
-    stack: ['React', 'Tailwind', 'Zustand', 'Express', 'Supabase'],
-    links: [['Live', 'https://csu-smartlib.vercel.app/'], ['Code', 'https://github.com/N-Shovel/smartlib-csu']],
-  },
-  {
     name: 'ITE Math Lab',
     meta: 'Education',
     image: 'math-lab.jpg',
@@ -73,7 +64,9 @@ export const projects = [
   },
 ];
 
-export const personalProjects = [
+// [name, description, optional link]
+export const moreProjects = [
+  ['SmartLib CSU', 'My first team project: CSU library platform, frontend lead · React, Express, Supabase', 'https://csu-smartlib.vercel.app/'],
   ['My Own News Feed', 'Customizable world news feed · React, TypeScript'],
   ['Avatar Customizer', 'Minecraft skin editor with 3D preview · TypeScript, Three.js'],
   ['LUCID', 'First-person story game, final project for a major subject · Godot 4'],
