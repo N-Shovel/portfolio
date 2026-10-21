@@ -42,6 +42,7 @@ export default async function handler(req, res) {
     generationConfig: { temperature: 0.4, maxOutputTokens: 2048 }, // thinking models spend part of this before replying
   });
 
+  const failures = [];
   for (const model of MODELS) {
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model.trim()}:generateContent`, {
@@ -52,15 +53,17 @@ export default async function handler(req, res) {
       const data = await r.json();
       if (!r.ok) {
         // 404 = model retired, 429/5xx = overloaded or quota hit: fall through to the next model.
-        console.error('Gemini error', model, r.status, JSON.stringify(data).slice(0, 300));
+        failures.push(`${model}: ${r.status} ${data.error?.message?.slice(0, 120) || ''}`);
         if (r.status === 404 || r.status === 429 || r.status >= 500) continue;
+        console.error('Gemini failed:', failures.join(' | '));
         return res.status(502).json({ error: FALLBACK });
       }
       const reply = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('').trim();
       return res.status(200).json({ reply: reply || FALLBACK });
     } catch (err) {
-      console.error('Gemini request failed', model, err);
+      failures.push(`${model}: ${err.message}`);
     }
   }
+  console.error('Gemini failed:', failures.join(' | '));
   return res.status(502).json({ error: FALLBACK });
 }
