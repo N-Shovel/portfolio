@@ -6,7 +6,8 @@ My personal portfolio site, with an AI assistant that answers visitors' question
 
 ## Stack
 
-- Plain HTML, CSS and JavaScript, with no build step. Dark and light themes.
+- React 19 + Tailwind CSS v4, built with Vite. Dark and light themes.
+- `src/data.js`: projects, skills and links shown on the page.
 - `api/chat.js`: a Vercel serverless function that calls the Gemini API.
 - `api/_knowledge.js`: what the assistant knows about me. Edit this file to change its answers.
 
@@ -15,4 +16,4 @@ My personal portfolio site, with an AI assistant that answers visitors' question
 1. Add `GEMINI_API_KEY` in Vercel → Project → Settings → Environment Variables.
 2. Optional: set `GEMINI_MODEL` to a comma-separated list of model names to try in order.
 
-Run it locally with `vercel dev`.
+Run it locally with `npm install` then `vercel dev` (or `npm run dev` for the page without the chat API).

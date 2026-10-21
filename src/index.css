@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Theme colors as CSS variables, so utilities like bg-bg or text-muted switch with the theme. */
+:root {
+  --bg: #ffffff;
+  --surface: #f5f5f5;
+  --line: #e5e5e5;
+  --fg: #171717;
+  --muted: #6b6b6b;
+  --accent: #059669;
+  color-scheme: light;
+}
+.dark {
+  --bg: #0c0c0c;
+  --surface: #161616;
+  --line: #262626;
+  --fg: #ededed;
+  --muted: #8f8f8f;
+  --accent: #34d399;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { @apply bg-bg text-fg font-sans antialiased leading-relaxed; }
+}
+
+/* Underlined text links that darken on hover. */
+@utility link {
+  @apply underline decoration-line underline-offset-[3px] transition-colors hover:decoration-current;
+}
