@@ -14,45 +14,13 @@ function toggleTheme() {
 
 document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 document.addEventListener('keydown', (e) => {
-  if (e.key.toLowerCase() === 't' && !e.target.closest('input, textarea')) toggleTheme();
+  if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !e.target.closest('input, textarea')) toggleTheme();
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Terminal typing effect in the hero.
-const lines = [
-  ['$ ', 'whoami'],
-  ['', 'nimrod "rody" pala'],
-  ['$ ', 'cat interests.txt'],
-  ['', 'full-stack web · c/c++ · 3d · games'],
-  ['$ ', 'echo $NEXT'],
-  ['', 'python → robotics'],
-];
-const typed = document.getElementById('typed');
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-}
-
-async function typeLines() {
-  let html = '';
-  for (const [prefix, text] of lines) {
-    const pre = prefix ? `<span class="k">${prefix}</span>` : '';
-    if (reduceMotion) { html += pre + escapeHtml(text) + '\n'; continue; }
-    for (let i = 1; i <= text.length; i++) {
-      typed.innerHTML = html + pre + escapeHtml(text.slice(0, i)) + '▌';
-      await new Promise((r) => setTimeout(r, prefix ? 55 : 18));
-    }
-    html += pre + escapeHtml(text) + '\n';
-    await new Promise((r) => setTimeout(r, 300));
-  }
-  typed.innerHTML = html;
-}
-typeLines();
-
 // Reveal sections on scroll.
-const revealEls = document.querySelectorAll('.section-title, .about-grid, .skill-card, .project, .mini, .contact-card');
+const revealEls = document.querySelectorAll('.item, .plain-list, .prose, .skills, .big-link');
 revealEls.forEach((el) => el.classList.add('reveal'));
 const io = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
