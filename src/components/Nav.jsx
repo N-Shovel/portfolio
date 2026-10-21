@@ -16,7 +16,7 @@ export default function Nav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-20 mx-auto flex max-w-[760px] items-center justify-between bg-bg/85 px-5 py-[18px] backdrop-blur">
+    <header className="sticky top-0 z-20 mx-auto flex max-w-6xl sm:px-8 items-center justify-between bg-bg/85 px-5 py-[18px] backdrop-blur">
       <a href="#top" className="font-semibold">Nimrod Pala</a>
       <nav aria-label="Main" className="flex items-center gap-4 text-[0.92rem] sm:gap-[22px]">
         <a href="#work" className="text-muted hover:text-fg">Work</a>
