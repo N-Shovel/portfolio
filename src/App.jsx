@@ -38,7 +38,7 @@ function Project({ p }) {
       <p className="text-[0.93rem] text-muted">{p.description}</p>
       {/* mt-auto keeps the stack and links aligned along the bottom of each row */}
       <div className="mt-auto pt-2.5">
-        <p className="font-mono text-xs text-muted opacity-85">{p.stack.join(' · ')}</p>
+        <p className="font-mono text-xs text-muted">{p.stack.join(' · ')}</p>
         <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[0.9rem]">
           {p.links.map(([label, url]) => <a key={url} href={url} {...ext} className="link">{label}</a>)}
         </p>
