@@ -8,7 +8,7 @@ export const projects = [
     name: 'Scrapyard Kingdom',
     meta: 'Game',
     image: 'scrapyard.jpg',
-    alt: 'Scrapyard Kingdom title screen',
+    alt: 'Scrapyard Kingdom preparation phase: the junkyard maze from above, with the turret and trap hotbar',
     description: '3D action tower defense in plain JavaScript. Plan your maze from above, then fight in first or third person. The junkyard rebuilds itself every round.',
     stack: ['JavaScript', 'Three.js', 'Blender'],
     links: [['Play', 'https://n-shovel.github.io/scrapyard-kingdom/'], ['Code', 'https://github.com/N-Shovel/scrapyard-kingdom']],
@@ -16,8 +16,7 @@ export const projects = [
   {
     name: 'Folder Tracker',
     meta: 'Desktop app · v1.2',
-    image: 'folder-tracker.png',
-    contain: true,
+    image: 'folder-tracker.jpg',
     alt: 'Folder Tracker panel listing projects by git status',
     description: 'A floating desktop bubble that shows which project folders are on GitHub, git-only or untracked. Native C++ for Windows and Linux, about 6 MB of RAM.',
     stack: ['C++', 'Win32', 'Direct2D', 'GTK'],
@@ -67,14 +66,11 @@ export const projects = [
 
 // [name, description, optional link]
 export const moreProjects = [
-  ['LCO & Organization', 'Project leader: platform for CSU student orgs with an LCO fee-status check · Next.js, Supabase'],
-  ['SmartLib CSU', 'My first team project: CSU library platform, frontend lead · React, Express, Supabase', 'https://csu-smartlib.vercel.app/'],
+  ['Organization Café', 'Project leader, in development: platform for CSU student orgs with an LCO fee-status check · React, Supabase', 'https://org-cafe.vercel.app/'],
+  ['SmartLib CSU', 'My first team project (a class project): CSU library platform, frontend lead · React, Express, Supabase', 'https://csu-smartlib.vercel.app/'],
   ['ITE 18 Learning Journey', '27 course activities, built and deployed by CI · Three.js, Vite, GitHub Actions', 'https://n-shovel.github.io/ite18-learning-journey/'],
   ['Orbit Synth', 'Generative music toy: planets on orbit rings play notes · Tone.js', 'https://github.com/N-Shovel/orbit-synth'],
-  ['My Own News Feed', 'Customizable world news feed · React, TypeScript'],
-  ['Avatar Customizer', 'Minecraft skin editor with 3D preview · TypeScript, Three.js'],
-  ['LUCID', 'First-person story game, final project for a major subject · Godot 4'],
-  ['Break Timer', 'Calm pomodoro timer · HTML, CSS, JS'],
+  ['Avatar Customizer', 'Minecraft skin editor with 3D preview · TypeScript, Three.js', 'https://github.com/N-Shovel/avatar-customizer'],
 ];
 
 export const skills = [

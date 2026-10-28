@@ -2,13 +2,13 @@
 export const KNOWLEDGE = `
 # About Nimrod
 - Full name: Nimrod P. Pala. Nickname: Rody.
-- Role: full-stack developer and 3rd-year BS Computer Science student at Caraga State University (CSU), Butuan City, Philippines. Expected graduation: 2028. Good academic standing.
+- Role: full-stack and game developer; 3rd-year BS Computer Science student at Caraga State University (CSU), Butuan City, Philippines. Expected graduation: 2028. Good academic standing.
 - Personality and motivation: he enjoys coding and understanding how things work, then building his own version. He learns mostly by building projects.
 - Availability: open to commissions (freelance work), REMOTE ONLY for now because he is still studying.
 - Languages: English (also Filipino).
 - Currently learning Python. After graduating he wants to build physical things with his own hands (hardware and robotics-style projects) and write the code for them.
 - Hobbies: plays chess competitively; fan of the One Piece anime and manga. He also likes building random things he thinks will be useful.
-- Experience: no formal job or certificates yet; his experience comes from the many projects he has built (see below). His first team development experience was SmartLib CSU, where he was frontend lead. He is now project leader of the LCO & Organization team project (see Team and leadership). When asked about his best work, highlight Scrapyard Kingdom, Folder Tracker, PageVoice and the C Visualizers rather than SmartLib.
+- Experience: no formal job or certificates yet; his experience comes from the many projects he has built (see below). His first team development experience was SmartLib CSU, where he was frontend lead. He is now project leader of the Organization Café team project (see Team and leadership). When asked about his best work, highlight Scrapyard Kingdom, Folder Tracker, PageVoice and the C Visualizers rather than SmartLib.
 
 # Contact
 - Email: nimrodpala01@gmail.com (best way to reach him for commissions)
@@ -25,7 +25,7 @@ export const KNOWLEDGE = `
 
 # Featured projects
 1. SmartLib CSU (his first team development project; a learning experience rather than his strongest work) — https://csu-smartlib.vercel.app/ · code: https://github.com/N-Shovel/smartlib-csu
-   A web platform for the Caraga State University library: online book and thesis search with filters (title, author, category), real-time discussion-room reservations that prevent overlapping bookings, a digital borrowing and tracking system replacing manual logbooks, and monitoring of in-house reading. Responsive on desktop, tablet and mobile. Users: CSU students, faculty, librarians and staff.
+   A class project, finished; it was built for a course and is not actually used by the CSU library. A web platform for the Caraga State University library: online book and thesis search with filters (title, author, category), real-time discussion-room reservations that prevent overlapping bookings, a digital borrowing and tracking system replacing manual logbooks, and monitoring of in-house reading. Responsive on desktop, tablet and mobile. Designed for CSU students, faculty, librarians and staff.
    Stack: React 19, Vite, Tailwind CSS v4, Zustand, React Router, Axios, lucide-react on the frontend; Node.js + Express 5 with Supabase (PostgreSQL) on the backend.
    Nimrod's role: frontend lead developer; he also did a good part of the backend work when the team's backend developer had problems with their laptop.
 
@@ -56,16 +56,15 @@ export const KNOWLEDGE = `
 9. Orbit Synth — code: https://github.com/N-Shovel/orbit-synth
    A generative music toy for the browser: place planets on orbit rings and each plays a note when it crosses the top. Inner rings orbit faster and play higher notes, so patterns quickly become polyrhythms. Built with Tone.js.
 
-# Team and leadership
-- Project Leader, LCO & Organization (Software Engineering 2, team of 3, 2026 to present): a web platform for CSU student organizations with a fee-status check for the League of Campus Organizations (LCO). He interviewed LCO officers, wrote the SRS (software requirements specification), designed the ERD and built the Figma prototype. Stack: Next.js, Supabase. Still in progress; no public link yet.
-- Frontend Lead, SmartLib CSU (2026): see project 1.
-- Report Lead, Information Assurance and Security 1 (team of 2, 2026): writing the report and contingency plan for a Kali Linux penetration test of the LCO & Organization system.
+10. Avatar Customizer — code: https://github.com/N-Shovel/avatar-customizer
+   A browser-based Minecraft skin editor (TypeScript, Three.js, skinview3d, Vitest) with pixel tools, parts, layers, undo, a live 3D preview and 64x64 PNG export.
 
-# Personal projects (private repos; no public links — say they are personal projects)
-- My Own News Feed: customizable desktop world news feed (React 19, TypeScript, Vite) pulling from The Guardian, New York Times, GNews and custom RSS/Atom feeds, with topic, region, source and keyword filters and saved preferences.
-- Avatar Customizer: browser-based Minecraft skin editor (TypeScript, Three.js, skinview3d, Vitest) with pixel tools, parts, layers, undo, a live 3D preview and PNG export.
-- LUCID: "The Four Doors of Waking", a first-person story game made in Godot 4 (GDScript, shaders) as the final project for one of his major subjects, with a CI pipeline that deploys a web build when changes merge.
-- Break Timer: a calm pomodoro-style timer in plain HTML/CSS/JS.
+# Team and leadership
+- Project Leader, Organization Café (formerly called "LCO & Organization"; Software Engineering 2, team of 3, 2026 to present) — https://org-cafe.vercel.app/ (in development). A web platform for recognized CSU student organizations: a public directory with search and categories, organization pages with posts, events and announcements, and a fee-clearance lookup for the League of Campus Organizations (LCO). The team plans to turn it over to the LCO once it is finished. Team roles: a full-stack developer (who owns the code repository), a member who handles design and system analysis, and Nimrod as project leader, responsible for documentation (he wrote the SRS, the software requirements specification), research (including interviewing LCO officers), project logs and planning. He also co-designed the database ERD and the Figma prototype with the team's designer. Stack: React, Vite, Tailwind CSS, Supabase.
+- Frontend Lead, SmartLib CSU (2026): see project 1.
+- Report Lead, Information Assurance and Security 1 (team of 2, 2026): writing the report and contingency plan for a Kali Linux penetration test of the Organization Café system.
+
+# Coursework
 - He has also done class activities with Three.js and The Odin Project web development coursework.
 `;
 

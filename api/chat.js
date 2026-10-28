@@ -1,10 +1,12 @@
 import { SYSTEM_PROMPT } from './_knowledge.js';
 
 // Models to try in order; the first that answers is used. Flash-Lite replies in about a second
-// without "thinking"; Flash is a slower fallback whose free quota runs out sooner.
+// without "thinking"; Flash is a slower fallback that is often overloaded (503) when Flash-Lite is.
 const MODELS = (process.env.GEMINI_MODEL || 'gemini-flash-lite-latest,gemini-flash-latest').split(',').map((m) => m.trim());
-// Give up on a model after this long and try the next, so an overloaded model can't hang the chat.
-const ATTEMPT_TIMEOUT_MS = 9000;
+// [model, timeout in ms]. Flash-Lite sometimes hangs on one request, so it gets a fresh second try
+// before the fallback. All attempts fit in BUDGET_MS: the browser gives up after 25 s, the function after 30 s.
+const ATTEMPTS = [[MODELS[0], 6000], [MODELS[0], 6000], ...MODELS.slice(1).map((m) => [m, 9000])];
+const BUDGET_MS = 22000;
 const MAX_MESSAGES = 12;
 const MAX_CHARS = 500;
 const FALLBACK = 'Sorry, I can\'t answer right now. You can email Rody at nimrodpala01@gmail.com.';
@@ -19,8 +21,20 @@ function rateLimited(ip) {
   return recent.length > 20;
 }
 
+// Only the site's own pages may use the assistant. Browsers send Origin with every POST and a page can't change it,
+// so other websites can't call this; a script can still send any Origin it likes.
+function fromOwnSite(req) {
+  try {
+    const { host } = new URL(req.headers.origin);
+    return host === req.headers['x-forwarded-host'] || host === req.headers.host;
+  } catch {
+    return false;
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!fromOwnSite(req)) return res.status(403).json({ error: FALLBACK });
 
   const key = process.env.GEMINI_API_KEY;
   if (!key) return res.status(503).json({ error: 'The assistant isn\'t set up yet. Email Rody at nimrodpala01@gmail.com.' });
@@ -46,10 +60,18 @@ export default async function handler(req, res) {
   });
 
   const attempts = [];
-  for (const model of MODELS) {
+  const deadline = Date.now() + BUDGET_MS;
+  let retryable = true;
+  for (const [i, [model, limit]] of ATTEMPTS.entries()) {
+    // Asking the same model again only helps after a timeout or a server error, not after e.g. a 429 or 404.
+    const retry = i > 0 && model === ATTEMPTS[i - 1][0];
+    if (retry && !retryable) continue;
+    const ms = Math.min(limit, deadline - Date.now());
+    if (ms < 1000) break;
+    const label = retry ? `${model} (retry)` : model;
     const started = Date.now();
     const timeout = new AbortController();
-    const timer = setTimeout(() => timeout.abort(), ATTEMPT_TIMEOUT_MS);
+    const timer = setTimeout(() => timeout.abort(), ms);
     try {
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
         method: 'POST',
@@ -60,18 +82,20 @@ export default async function handler(req, res) {
       const data = await r.json();
       const took = Date.now() - started;
       if (!r.ok) {
-        // e.g. 404 = model retired, 429 = quota used up, 503 = overloaded: try the next model.
-        attempts.push(`${model}: ${r.status} in ${took}ms ${data.error?.message?.slice(0, 120) || ''}`);
+        // e.g. 404 = model retired, 429 = quota used up, 503 = overloaded: try the next attempt.
+        retryable = r.status >= 500;
+        attempts.push(`${label}: ${r.status} in ${took}ms ${data.error?.message?.slice(0, 120) || ''}`);
         continue;
       }
       const reply = data.candidates?.[0]?.content?.parts?.map((p) => p.text || '').join('').trim();
       const usage = data.usageMetadata || {};
-      attempts.push(`${model} (${data.modelVersion}) ok in ${took}ms, ${usage.thoughtsTokenCount || 0} thinking tokens`);
+      attempts.push(`${label} (${data.modelVersion}) ok in ${took}ms, ${usage.thoughtsTokenCount || 0} thinking tokens`);
       console.log('Gemini:', attempts.join(' | '));
       return res.status(200).json({ reply: reply || FALLBACK });
     } catch (err) {
+      retryable = true;
       const reason = err.name === 'AbortError' ? 'timed out' : err.message;
-      attempts.push(`${model}: ${reason} after ${Date.now() - started}ms`);
+      attempts.push(`${label}: ${reason} after ${Date.now() - started}ms`);
     } finally {
       clearTimeout(timer);
     }

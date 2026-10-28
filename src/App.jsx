@@ -28,7 +28,7 @@ function Project({ p }) {
           src={`/assets/projects/${p.image}`}
           alt={p.alt}
           loading="lazy"
-          className={`h-full w-full object-top transition-transform duration-400 group-hover:scale-[1.03] ${p.contain ? 'object-contain py-2.5' : 'object-cover'}`}
+          className="h-full w-full object-cover object-top transition-transform duration-400 group-hover:scale-[1.03]"
         />
       </a>
       <div className="mb-1.5 flex items-baseline justify-between gap-3">
@@ -38,7 +38,7 @@ function Project({ p }) {
       <p className="text-[0.93rem] text-muted">{p.description}</p>
       {/* mt-auto keeps the stack and links aligned along the bottom of each row */}
       <div className="mt-auto pt-2.5">
-        <p className="font-mono text-xs text-muted opacity-85">{p.stack.join(' · ')}</p>
+        <p className="font-mono text-xs text-muted">{p.stack.join(' · ')}</p>
         <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[0.9rem]">
           {p.links.map(([label, url]) => <a key={url} href={url} {...ext} className="link">{label}</a>)}
         </p>
@@ -57,12 +57,16 @@ export default function App() {
       <main id="top" className="mx-auto max-w-6xl px-5 sm:px-8">
         {/* The intro fills the first screen so the scene shows in full before the panels. */}
         <section className="relative flex min-h-[calc(100svh-61px)] flex-col pt-6 pb-28 md:pt-20">
-          <div className="legible max-w-2xl max-md:rounded-2xl max-md:border max-md:border-line max-md:bg-panel max-md:p-5 max-md:backdrop-blur-md">
+          <div id="intro" className="legible max-w-2xl max-md:rounded-2xl max-md:border max-md:border-line max-md:bg-panel max-md:p-5 max-md:backdrop-blur-md">
             <div className="mb-6 flex items-center gap-4 md:mb-7 md:gap-5">
-              <img src="/assets/rody.png" alt="Portrait of Nimrod Pala" width="112" height="112" className="size-16 shrink-0 rounded-full object-cover ring-2 ring-accent/60 ring-offset-2 ring-offset-bg md:size-28" />
+              {/* 224px files: twice the largest display size, for sharp high-density screens */}
+              <picture className="shrink-0">
+                <source srcSet="/assets/rody.avif" type="image/avif" />
+                <img src="/assets/rody.webp" alt="Portrait of Nimrod Pala" width="112" height="112" className="block size-16 rounded-full object-cover ring-2 ring-accent/60 ring-offset-2 ring-offset-bg md:size-28" />
+              </picture>
               <div>
                 <h1 className="font-serif text-[2rem] leading-tight font-semibold tracking-tight md:text-6xl">Nimrod Pala</h1>
-                <p className="mt-1.5 text-sm text-muted md:text-lg">Full-stack developer · CS student at Caraga State University</p>
+                <p className="mt-1.5 text-sm text-muted md:text-lg">Full-stack and game developer · CS student at Caraga State University</p>
               </div>
             </div>
             <p className="mb-5 max-w-[46ch] sm:text-lg md:text-xl">I build things to understand how they work: web apps, desktop tools, games and visualizers. You can call me Rody.</p>
@@ -74,7 +78,6 @@ export default function App() {
               <li><a href={LINKEDIN} {...ext} className="link">LinkedIn</a></li>
               <li><a href={GITHUB} {...ext} className="link">GitHub</a></li>
               <li><a href={RESUME} {...ext} className="link">Resume</a></li>
-              <li><button onClick={() => setChatOpen(true)} className="cursor-pointer text-accent underline-offset-[3px] hover:underline">Ask my assistant</button></li>
             </ul>
           </div>
           <a href="#work" className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-line bg-panel px-4 py-2 text-sm text-muted backdrop-blur-md hover:text-fg motion-safe:animate-drift">

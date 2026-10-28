@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { startAmbient, stopAmbient } from '../ambient.js';
 import Blossom from './Blossom.jsx';
 
@@ -21,15 +21,6 @@ export default function Nav() {
     try { localStorage.setItem('theme', next ? 'dark' : 'light'); } catch (e) {}
   };
 
-  // T toggles the theme, except while typing.
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !e.target.closest('input, textarea')) toggleTheme();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, []);
-
   return (
     <header className="sticky top-0 z-20 border-b border-line/60 bg-bg/60 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-8">
@@ -38,7 +29,7 @@ export default function Nav() {
           <a href="#work" className="text-muted hover:text-fg max-[370px]:hidden">Work</a>
           <a href="#about" className="text-muted hover:text-fg max-[480px]:hidden">About</a>
           <a href="#contact" className="text-muted hover:text-fg">Contact</a>
-          <button onClick={toggleSound} aria-label={sound ? 'Turn music off' : 'Turn on ambient music'} aria-pressed={sound} title={sound ? 'Music on' : 'Play ambient music'} className={`grid cursor-pointer place-items-center p-1 hover:text-fg ${sound ? 'text-accent' : 'text-muted'}`}>
+          <button onClick={toggleSound} aria-label="Ambient music, generated live in your browser" aria-pressed={sound} title={sound ? 'Ambient music on (generated live in your browser)' : 'Ambient music, generated live in your browser'} className={`grid cursor-pointer place-items-center p-1 hover:text-fg ${sound ? 'text-accent' : 'text-muted'}`}>
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M11 5 6 9H2v6h4l5 4z" />
               {sound ? <path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14" /> : <path d="m22 9-6 6M16 9l6 6" />}
@@ -50,7 +41,7 @@ export default function Nav() {
             role="switch"
             aria-checked={dark}
             aria-label="Dark mode"
-            title={dark ? 'Switch to day (T)' : 'Switch to night (T)'}
+            title={dark ? 'Switch to day' : 'Switch to night'}
             className="relative flex h-8 w-[60px] shrink-0 cursor-pointer items-center justify-between rounded-full border border-line bg-surface/70 px-1"
           >
             <span className="absolute top-1/2 left-1 size-6 -translate-y-1/2 rounded-full bg-accent shadow-sm transition-transform duration-300 dark:translate-x-[28px]" />
