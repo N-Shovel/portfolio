@@ -54,9 +54,10 @@ function quad(a, c, b, t) {
   return u * u * a + 2 * u * t * c + t * t * b;
 }
 
-function makeLayout(W, H) {
+// `clear` is the intro text in page coordinates ({ top, bottom, skyTop }). The sun or moon and the far peak
+// stay clear of it, so on short screens the horizon moves down with them.
+function makeLayout(W, H, clear) {
   const mobile = W < 768;
-  const horizon = Math.round(H * (mobile ? 0.7 : 0.64));
   const ground = Math.round(H * (mobile ? 0.9 : 0.86));
   const S = mobile ? Math.min(W * 0.78, H * 0.38) : Math.min(W * 0.42, H * 0.8);
   const baseX = mobile ? W * 0.8 : W - Math.min(W * 0.09, 130);
@@ -71,9 +72,28 @@ function makeLayout(W, H) {
     }
     return ground - (x - shoreX - rise) * 0.04;
   };
-  const r = mobile ? 20 : 30;
-  const orb = { x: W * (mobile ? 0.16 : 0.41), y: horizon - (mobile ? r + 16 : H * 0.075), r };
-  return { W, H, mobile, horizon, ground, S, baseX, rise, shoreX, landTop, orb };
+  let r = mobile ? 20 : 30;
+  // how high the sun or moon sits above the horizon
+  const lift = mobile ? r + 16 : H * 0.075;
+  let horizon = Math.round(H * (mobile ? 0.7 : 0.64));
+  let orbY = horizon - lift;
+  let peakH = mobile ? 0 : H * 0.1;
+  if (clear) {
+    const below = Math.max(orbY, clear.bottom + r + 20);
+    if (below + lift <= H * (mobile ? 0.8 : 0.76)) {
+      orbY = below;
+      horizon = Math.max(horizon, Math.round(below + lift));
+    } else {
+      // the text runs past the horizon (e.g. a landscape phone): use the strip of sky above it instead
+      r = Math.max(14, Math.min(r, (clear.top - clear.skyTop) / 2 - 8));
+      orbY = (clear.skyTop + clear.top) / 2;
+    }
+    // the peak is lowered to stay under the text, and left out if too little of it is left
+    peakH = Math.min(peakH, horizon - clear.bottom - 12);
+    if (peakH < H * 0.04) peakH = 0;
+  }
+  const orb = { x: W * (mobile ? 0.16 : 0.41), y: orbY, r };
+  return { W, H, mobile, horizon, ground, S, baseX, rise, shoreX, landTop, orb, peakH, clear };
 }
 
 function buildTree(L) {
@@ -175,12 +195,12 @@ function drawSky(ctx, T, L) {
   ctx.lineTo(end, horizon);
   ctx.closePath();
   ctx.fill();
-  if (mobile) return;
 
-  // a lone snow-capped peak in the distance
+  // a lone snow-capped peak in the distance (not on phones)
+  if (!L.peakH) return;
   const fx = W * 0.17;
   const bw = W * 0.2;
-  const h = H * 0.1;
+  const h = L.peakH;
   ctx.fillStyle = T.near;
   ctx.beginPath();
   ctx.moveTo(fx - bw / 2, horizon);
@@ -486,8 +506,10 @@ function canopyBounds(clusters, L) {
   return { x0, x1, y0: Math.max(0, y0), y1 };
 }
 
-export function createSakuraScene(base, fx) {
+// `clearOf` returns the box the sun, moon and peak must avoid (see makeLayout), or null.
+export function createSakuraScene(base, fx, { clearOf } = {}) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
   const baseCtx = base.getContext('2d');
   const fxCtx = fx.getContext('2d');
   let L = null;
@@ -505,6 +527,7 @@ export function createSakuraScene(base, fx) {
   let last = 0;
   let raf = 0;
   let resizeTimer = 0;
+  let alive = true;
   const mouse = { x: -1e4, y: -1e4, vx: 0, vy: 0, active: 0 };
 
   const currentTheme = () => (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
@@ -554,7 +577,7 @@ export function createSakuraScene(base, fx) {
   function render(resetPetals) {
     const W = base.clientWidth || window.innerWidth;
     const H = base.clientHeight || window.innerHeight;
-    L = makeLayout(W, H);
+    L = makeLayout(W, H, clearOf?.());
     themeName = currentTheme();
     T = THEMES[themeName];
     // keep the backing store under ~9 megapixels on large or high-density screens
@@ -713,13 +736,20 @@ export function createSakuraScene(base, fx) {
     mouse.active = 1;
   };
 
-  // mobile browser bars change the height constantly, so only big changes trigger a redraw
+  // the text to keep clear of moved, e.g. it rewrapped or the fonts loaded
+  const moved = () => {
+    const c = clearOf?.();
+    return !!c && (!L.clear || c.top !== L.clear.top || c.bottom !== L.clear.bottom);
+  };
+
+  // mobile browser bars change the height constantly, so on touch screens only big changes trigger a redraw
   const onResize = () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       const W = base.clientWidth;
       const H = base.clientHeight;
-      if (W !== L.W || Math.abs(H - L.H) > L.H * 0.15) render(true);
+      if (W !== L.W || Math.abs(H - L.H) > (coarse ? L.H * 0.15 : 0)) render(true);
+      else if (moved()) render(false);
     }, 150);
   };
 
@@ -728,6 +758,7 @@ export function createSakuraScene(base, fx) {
   });
 
   render(true);
+  document.fonts?.ready.then(() => alive && moved() && render(false));
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   window.addEventListener('resize', onResize);
   if (!reduceMotion) {
@@ -737,6 +768,7 @@ export function createSakuraScene(base, fx) {
 
   return {
     destroy() {
+      alive = false;
       cancelAnimationFrame(raf);
       clearTimeout(resizeTimer);
       observer.disconnect();

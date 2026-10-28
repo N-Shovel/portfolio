@@ -57,7 +57,7 @@ export default function App() {
       <main id="top" className="mx-auto max-w-6xl px-5 sm:px-8">
         {/* The intro fills the first screen so the scene shows in full before the panels. */}
         <section className="relative flex min-h-[calc(100svh-61px)] flex-col pt-6 pb-28 md:pt-20">
-          <div className="legible max-w-2xl max-md:rounded-2xl max-md:border max-md:border-line max-md:bg-panel max-md:p-5 max-md:backdrop-blur-md">
+          <div id="intro" className="legible max-w-2xl max-md:rounded-2xl max-md:border max-md:border-line max-md:bg-panel max-md:p-5 max-md:backdrop-blur-md">
             <div className="mb-6 flex items-center gap-4 md:mb-7 md:gap-5">
               <img src="/assets/rody.png" alt="Portrait of Nimrod Pala" width="112" height="112" className="size-16 shrink-0 rounded-full object-cover ring-2 ring-accent/60 ring-offset-2 ring-offset-bg md:size-28" />
               <div>
