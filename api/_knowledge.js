@@ -60,14 +60,11 @@ export const KNOWLEDGE = `
    A browser-based Minecraft skin editor (TypeScript, Three.js, skinview3d, Vitest) with pixel tools, parts, layers, undo, a live 3D preview and 64x64 PNG export.
 
 # Team and leadership
-- Project Leader, Organization Café (formerly called "LCO & Organization"; Software Engineering 2, team of 3, 2026 to present) — https://org-cafe.vercel.app/ (in development). A web platform for recognized CSU student organizations: a public directory with search and categories, organization pages with posts, events and announcements, and a fee-clearance lookup for the League of Campus Organizations (LCO). The team plans to turn it over to the LCO once it is finished. Team roles: a full-stack developer (who owns the code repository), a member who handles design and system analysis, and Nimrod as project leader, responsible for documentation (he wrote the SRS, the software requirements specification), research (including interviewing LCO officers), project logs and planning. Stack: React, Vite, Tailwind CSS, Supabase.
+- Project Leader, Organization Café (formerly called "LCO & Organization"; Software Engineering 2, team of 3, 2026 to present) — https://org-cafe.vercel.app/ (in development). A web platform for recognized CSU student organizations: a public directory with search and categories, organization pages with posts, events and announcements, and a fee-clearance lookup for the League of Campus Organizations (LCO). The team plans to turn it over to the LCO once it is finished. Team roles: a full-stack developer (who owns the code repository), a member who handles design and system analysis, and Nimrod as project leader, responsible for documentation (he wrote the SRS, the software requirements specification), research (including interviewing LCO officers), project logs and planning. He also co-designed the database ERD and the Figma prototype with the team's designer. Stack: React, Vite, Tailwind CSS, Supabase.
 - Frontend Lead, SmartLib CSU (2026): see project 1.
 - Report Lead, Information Assurance and Security 1 (team of 2, 2026): writing the report and contingency plan for a Kali Linux penetration test of the Organization Café system.
 
-# Personal projects (private repos; no public links — say they are personal projects)
-- My Own News Feed: customizable desktop world news feed (React 19, TypeScript, Vite) pulling from The Guardian, New York Times, GNews and custom RSS/Atom feeds, with topic, region, source and keyword filters and saved preferences.
-- LUCID: "The Four Doors of Waking", a first-person story game made in Godot 4 (GDScript, shaders) as the final project for one of his major subjects, with a CI pipeline that deploys a web build when changes merge.
-- Break Timer: a calm pomodoro-style timer in plain HTML/CSS/JS.
+# Coursework
 - He has also done class activities with Three.js and The Odin Project web development coursework.
 `;
 
