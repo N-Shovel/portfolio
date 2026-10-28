@@ -59,7 +59,11 @@ export default function App() {
         <section className="relative flex min-h-[calc(100svh-61px)] flex-col pt-6 pb-28 md:pt-20">
           <div id="intro" className="legible max-w-2xl max-md:rounded-2xl max-md:border max-md:border-line max-md:bg-panel max-md:p-5 max-md:backdrop-blur-md">
             <div className="mb-6 flex items-center gap-4 md:mb-7 md:gap-5">
-              <img src="/assets/rody.png" alt="Portrait of Nimrod Pala" width="112" height="112" className="size-16 shrink-0 rounded-full object-cover ring-2 ring-accent/60 ring-offset-2 ring-offset-bg md:size-28" />
+              {/* 224px files: twice the largest display size, for sharp high-density screens */}
+              <picture className="shrink-0">
+                <source srcSet="/assets/rody.avif" type="image/avif" />
+                <img src="/assets/rody.webp" alt="Portrait of Nimrod Pala" width="112" height="112" className="block size-16 rounded-full object-cover ring-2 ring-accent/60 ring-offset-2 ring-offset-bg md:size-28" />
+              </picture>
               <div>
                 <h1 className="font-serif text-[2rem] leading-tight font-semibold tracking-tight md:text-6xl">Nimrod Pala</h1>
                 <p className="mt-1.5 text-sm text-muted md:text-lg">Full-stack developer · CS student at Caraga State University</p>
