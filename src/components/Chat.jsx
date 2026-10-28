@@ -39,20 +39,17 @@ export default function Chat({ open, setOpen }) {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, busy]);
 
-  async function send(text) {
-    text = text.trim();
-    if (!text || busy) return;
-    setInput('');
-    // The greeting is UI only; don't send it to the model.
-    const history = [...messages.slice(1), { role: 'user', text }];
-    setMessages((m) => [...m, { role: 'user', text }]);
+  // Show `log`, which ends with the visitor's question, and fetch the reply to it.
+  async function ask(log) {
+    setMessages(log);
     setBusy(true);
     let reply;
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history.filter((m) => !m.error).slice(-12) }),
+        // The greeting is UI only; don't send it to the model.
+        body: JSON.stringify({ messages: log.slice(1).filter((m) => !m.error).slice(-12) }),
         signal: AbortSignal.timeout(25000),
       });
       const data = await res.json().catch(() => ({}));
@@ -63,10 +60,20 @@ export default function Chat({ open, setOpen }) {
         : `I couldn't connect just now. You can reach Rody directly at ${EMAIL}.`;
       reply = { role: 'model', text, error: true };
     }
-    setMessages((m) => [...m, reply]);
+    setMessages([...log, reply]);
     setBusy(false);
     inputRef.current?.focus();
   }
+
+  function send(text) {
+    text = text.trim();
+    if (!text || busy) return;
+    setInput('');
+    ask([...messages, { role: 'user', text }]);
+  }
+
+  // After a failed reply, drop the error and ask again; the question is already in the log.
+  const retry = () => !busy && ask(messages.slice(0, -1));
 
   return (
     <>
@@ -92,6 +99,9 @@ export default function Chat({ open, setOpen }) {
             {messages.map((m, i) => (
               <div key={i} className={`max-w-[85%] rounded-xl px-3 py-2 text-[0.9rem] whitespace-pre-wrap break-words ${m.role === 'user' ? 'self-end bg-accent text-bg' : 'self-start bg-surface'}`}>
                 {m.role === 'user' ? m.text : withLinks(m.text)}
+                {m.error && i === messages.length - 1 && (
+                  <button onClick={retry} className="mt-1.5 block cursor-pointer font-medium text-accent underline underline-offset-2">Try again</button>
+                )}
               </div>
             ))}
             {busy && <div className="self-start rounded-xl bg-surface px-3 py-2 text-[0.9rem] text-muted">thinking…</div>}

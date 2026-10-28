@@ -16,6 +16,6 @@ My personal portfolio site, with an AI assistant that answers visitors' question
 ## Setup
 
 1. Add `GEMINI_API_KEY` in Vercel → Project → Settings → Environment Variables.
-2. Optional: set `GEMINI_MODEL` to a comma-separated list of model names to try in order.
+2. Optional: set `GEMINI_MODEL` to a comma-separated list of model names to try in order. The first one gets a second, fresh try before the others, and all attempts together stay under 22 seconds.
 
 Run it locally with `npm install` then `vercel dev` (or `npm run dev` for the page without the chat API).
