@@ -80,9 +80,12 @@ function makeLayout(W, H, clear) {
   let peakH = mobile ? 0 : H * 0.1;
   if (clear) {
     const below = Math.max(orbY, clear.bottom + r + 20);
-    if (below + lift <= H * (mobile ? 0.8 : 0.76)) {
+    const maxHorizon = H * (mobile ? 0.8 : 0.76);
+    // when space is tight the orb may sit lower, down to 10px above the horizon
+    const gap = Math.min(lift, Math.max(r + 10, maxHorizon - below));
+    if (below + gap <= maxHorizon) {
       orbY = below;
-      horizon = Math.max(horizon, Math.round(below + lift));
+      horizon = Math.max(horizon, Math.round(below + gap));
     } else {
       // the text runs past the horizon (e.g. a landscape phone): use the strip of sky above it instead
       r = Math.max(14, Math.min(r, (clear.top - clear.skyTop) / 2 - 8));
