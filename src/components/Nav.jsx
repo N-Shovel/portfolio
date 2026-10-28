@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { startAmbient, stopAmbient } from '../ambient.js';
 import Blossom from './Blossom.jsx';
 
@@ -21,15 +21,6 @@ export default function Nav() {
     try { localStorage.setItem('theme', next ? 'dark' : 'light'); } catch (e) {}
   };
 
-  // T toggles the theme, except while typing.
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey && !e.target.closest('input, textarea')) toggleTheme();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, []);
-
   return (
     <header className="sticky top-0 z-20 border-b border-line/60 bg-bg/60 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-8">
@@ -50,7 +41,7 @@ export default function Nav() {
             role="switch"
             aria-checked={dark}
             aria-label="Dark mode"
-            title={dark ? 'Switch to day (T)' : 'Switch to night (T)'}
+            title={dark ? 'Switch to day' : 'Switch to night'}
             className="relative flex h-8 w-[60px] shrink-0 cursor-pointer items-center justify-between rounded-full border border-line bg-surface/70 px-1"
           >
             <span className="absolute top-1/2 left-1 size-6 -translate-y-1/2 rounded-full bg-accent shadow-sm transition-transform duration-300 dark:translate-x-[28px]" />
