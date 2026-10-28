@@ -66,7 +66,7 @@ export default function App() {
               </picture>
               <div>
                 <h1 className="font-serif text-[2rem] leading-tight font-semibold tracking-tight md:text-6xl">Nimrod Pala</h1>
-                <p className="mt-1.5 text-sm text-muted md:text-lg">Full-stack developer · CS student at Caraga State University</p>
+                <p className="mt-1.5 text-sm text-muted md:text-lg">Full-stack and game developer · CS student at Caraga State University</p>
               </div>
             </div>
             <p className="mb-5 max-w-[46ch] sm:text-lg md:text-xl">I build things to understand how they work: web apps, desktop tools, games and visualizers. You can call me Rody.</p>

@@ -2,7 +2,7 @@
 export const KNOWLEDGE = `
 # About Nimrod
 - Full name: Nimrod P. Pala. Nickname: Rody.
-- Role: full-stack developer and 3rd-year BS Computer Science student at Caraga State University (CSU), Butuan City, Philippines. Expected graduation: 2028. Good academic standing.
+- Role: full-stack and game developer; 3rd-year BS Computer Science student at Caraga State University (CSU), Butuan City, Philippines. Expected graduation: 2028. Good academic standing.
 - Personality and motivation: he enjoys coding and understanding how things work, then building his own version. He learns mostly by building projects.
 - Availability: open to commissions (freelance work), REMOTE ONLY for now because he is still studying.
 - Languages: English (also Filipino).
