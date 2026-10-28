@@ -78,7 +78,6 @@ export default function App() {
               <li><a href={LINKEDIN} {...ext} className="link">LinkedIn</a></li>
               <li><a href={GITHUB} {...ext} className="link">GitHub</a></li>
               <li><a href={RESUME} {...ext} className="link">Resume</a></li>
-              <li><button onClick={() => setChatOpen(true)} className="cursor-pointer text-accent underline-offset-[3px] hover:underline">Ask my assistant</button></li>
             </ul>
           </div>
           <a href="#work" className="absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-line bg-panel px-4 py-2 text-sm text-muted backdrop-blur-md hover:text-fg motion-safe:animate-drift">
