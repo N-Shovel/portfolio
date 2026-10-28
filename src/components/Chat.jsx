@@ -27,12 +27,19 @@ export default function Chat({ open, setOpen }) {
   const [busy, setBusy] = useState(false);
   const logRef = useRef(null);
   const inputRef = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (!open) return;
+    const opener = document.activeElement;
+    inputRef.current?.focus();
     const onKey = (e) => e.key === 'Escape' && setOpen(false);
     document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      // Focus inside the closed panel drops to <body>; hand it back to whatever opened the chat.
+      if (document.activeElement === document.body) (opener?.isConnected && opener !== document.body ? opener : buttonRef.current)?.focus();
+    };
   }, [open, setOpen]);
 
   useEffect(() => {
@@ -78,15 +85,18 @@ export default function Chat({ open, setOpen }) {
   return (
     <>
       <button
+        ref={buttonRef}
         onClick={() => setOpen(!open)}
         aria-label={open ? 'Close chat assistant' : 'Open chat assistant'}
+        aria-expanded={open}
+        aria-controls="chat-panel"
         className="fixed right-5 bottom-5 z-40 grid size-12 cursor-pointer place-items-center rounded-full bg-accent text-bg shadow-lg transition-transform hover:scale-105"
       >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
       </button>
 
       {open && (
-        <section aria-label="Chat with Rody's assistant" className="fixed right-5 bottom-20 z-50 flex h-[min(520px,calc(100vh-110px))] w-[min(360px,calc(100vw-32px))] flex-col overflow-hidden rounded-[14px] border border-line bg-bg shadow-2xl">
+        <section id="chat-panel" aria-label="Chat with Rody's assistant" className="fixed right-5 bottom-20 z-50 flex h-[min(520px,calc(100vh-110px))] w-[min(360px,calc(100vw-32px))] flex-col overflow-hidden rounded-[14px] border border-line bg-bg shadow-2xl">
           <header className="flex items-center justify-between border-b border-line px-4 py-3.5">
             <div className="flex flex-col text-[0.93rem]">
               <strong className="font-semibold">Ask about Rody</strong>
