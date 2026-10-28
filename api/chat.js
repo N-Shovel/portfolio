@@ -21,8 +21,20 @@ function rateLimited(ip) {
   return recent.length > 20;
 }
 
+// Only the site's own pages may use the assistant. Browsers send Origin with every POST and a page can't change it,
+// so other websites can't call this; a script can still send any Origin it likes.
+function fromOwnSite(req) {
+  try {
+    const { host } = new URL(req.headers.origin);
+    return host === req.headers['x-forwarded-host'] || host === req.headers.host;
+  } catch {
+    return false;
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (!fromOwnSite(req)) return res.status(403).json({ error: FALLBACK });
 
   const key = process.env.GEMINI_API_KEY;
   if (!key) return res.status(503).json({ error: 'The assistant isn\'t set up yet. Email Rody at nimrodpala01@gmail.com.' });
