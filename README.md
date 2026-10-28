@@ -10,6 +10,7 @@ My personal portfolio site, with an AI assistant that answers visitors' question
 - `src/data.js`: projects, skills and links shown on the page.
 - `src/scene/sakura.js`: the background, a sakura tree beside the sea with falling petals, drawn on canvas.
 - `src/ambient.js`: the optional ambient music, synthesized in the browser.
+- `src/components/Chat.jsx`: the chat window. Visitors can ask `MAX_QUESTIONS` (10) questions per page load.
 - `api/chat.js`: a Vercel serverless function that calls the Gemini API.
 - `api/_knowledge.js`: what the assistant knows about me. Edit this file to change its answers.
 

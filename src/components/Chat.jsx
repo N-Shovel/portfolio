@@ -3,6 +3,8 @@ import { EMAIL } from '../data.js';
 
 const SUGGESTIONS = ['What has he built?', 'Is he available for work?', "What's his tech stack?"];
 const GREETING = "Hi! I'm Rody's assistant. Ask me about his projects, skills, or how to hire him for a commission.";
+// Questions a visitor can ask per page load; a refresh starts over. The server also rate-limits each IP.
+const MAX_QUESTIONS = 10;
 const LINK = /\[([^\]]+)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|((?:https?:\/\/|mailto:)[^\s)]+)/g;
 
 // Turn [label](url) and bare URLs in a reply into links.
@@ -28,11 +30,13 @@ export default function Chat({ open, setOpen }) {
   const logRef = useRef(null);
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
+  const noteRef = useRef(null);
+  const left = MAX_QUESTIONS - messages.filter((m) => m.role === 'user').length;
 
   useEffect(() => {
     if (!open) return;
     const opener = document.activeElement;
-    inputRef.current?.focus();
+    (inputRef.current ?? noteRef.current)?.focus();
     const onKey = (e) => e.key === 'Escape' && setOpen(false);
     document.addEventListener('keydown', onKey);
     return () => {
@@ -45,6 +49,11 @@ export default function Chat({ open, setOpen }) {
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, busy]);
+
+  // Sending the last question swaps the input for a note; move focus there so it isn't lost.
+  useEffect(() => {
+    if (left <= 0) noteRef.current?.focus();
+  }, [left]);
 
   // Show `log`, which ends with the visitor's question, and fetch the reply to it.
   async function ask(log) {
@@ -74,7 +83,7 @@ export default function Chat({ open, setOpen }) {
 
   function send(text) {
     text = text.trim();
-    if (!text || busy) return;
+    if (!text || busy || left <= 0) return;
     setInput('');
     ask([...messages, { role: 'user', text }]);
   }
@@ -125,18 +134,25 @@ export default function Chat({ open, setOpen }) {
             </div>
           )}
 
-          <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="flex gap-2 border-t border-line p-3">
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask a question…"
-              maxLength={500}
-              autoComplete="off"
-              className="min-w-0 flex-1 rounded-[10px] border border-line bg-bg px-3 py-2 text-[0.92rem] outline-none focus:border-muted"
-            />
-            <button type="submit" disabled={busy} aria-label="Send" className="w-[38px] cursor-pointer rounded-[10px] bg-accent text-bg disabled:cursor-default disabled:opacity-40">↑</button>
-          </form>
+          {left > 0 ? (
+            <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="flex gap-2 border-t border-line p-3">
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={left <= 3 ? `Ask a question… (${left} left)` : 'Ask a question…'}
+                maxLength={500}
+                autoComplete="off"
+                className="min-w-0 flex-1 rounded-[10px] border border-line bg-bg px-3 py-2 text-[0.92rem] outline-none focus:border-muted"
+              />
+              <button type="submit" disabled={busy} aria-label="Send" className="w-[38px] cursor-pointer rounded-[10px] bg-accent text-bg disabled:cursor-default disabled:opacity-40">↑</button>
+            </form>
+          ) : (
+            <p ref={noteRef} tabIndex={-1} className="border-t border-line p-3 text-[0.9rem] text-muted outline-none">
+              That's the last of {MAX_QUESTIONS} questions for this visit. For anything else, email Rody at{' '}
+              <a href={`mailto:${EMAIL}`} className="text-accent underline underline-offset-2">{EMAIL}</a>.
+            </p>
+          )}
         </section>
       )}
     </>
