@@ -8,7 +8,7 @@ export const projects = [
     name: 'Scrapyard Kingdom',
     meta: 'Game',
     image: 'scrapyard.jpg',
-    alt: 'Scrapyard Kingdom title screen',
+    alt: 'Scrapyard Kingdom preparation phase: the junkyard maze from above, with the turret and trap hotbar',
     description: '3D action tower defense in plain JavaScript. Plan your maze from above, then fight in first or third person. The junkyard rebuilds itself every round.',
     stack: ['JavaScript', 'Three.js', 'Blender'],
     links: [['Play', 'https://n-shovel.github.io/scrapyard-kingdom/'], ['Code', 'https://github.com/N-Shovel/scrapyard-kingdom']],
@@ -16,8 +16,7 @@ export const projects = [
   {
     name: 'Folder Tracker',
     meta: 'Desktop app · v1.2',
-    image: 'folder-tracker.png',
-    contain: true,
+    image: 'folder-tracker.jpg',
     alt: 'Folder Tracker panel listing projects by git status',
     description: 'A floating desktop bubble that shows which project folders are on GitHub, git-only or untracked. Native C++ for Windows and Linux, about 6 MB of RAM.',
     stack: ['C++', 'Win32', 'Direct2D', 'GTK'],

@@ -28,7 +28,7 @@ function Project({ p }) {
           src={`/assets/projects/${p.image}`}
           alt={p.alt}
           loading="lazy"
-          className={`h-full w-full object-top transition-transform duration-400 group-hover:scale-[1.03] ${p.contain ? 'object-contain py-2.5' : 'object-cover'}`}
+          className="h-full w-full object-cover object-top transition-transform duration-400 group-hover:scale-[1.03]"
         />
       </a>
       <div className="mb-1.5 flex items-baseline justify-between gap-3">
